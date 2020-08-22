@@ -10,6 +10,46 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+//array to store employee objects
+const employees = [];
+
+mkTeam();
+//Initializes team-builder functions
+function mkTeam(){
+  mkManager();
+}
+
+//Creates a single manager object
+function mkManager() {
+  //Collects manager information
+  inquirer.prompt([
+    {
+      type: 'input',
+      message: 'Enter your manager\'s name',
+      name: 'name' 
+    },
+    {
+      type: 'input',
+      message: 'Enter your manager\'s Id number',
+      name: 'idnum'
+    },
+    {
+      type: 'input',
+      message: `Enter your manager's email`,
+      name: 'email'
+    },
+    {
+      type: 'input',
+      message: `Enter your manager's office number`,
+      name: 'office'
+    }
+  ]).then(response => {
+    //Creates/adds a manager object
+    const manager = new Manager(response.name, response.idnum, response.email, response.office)
+    employees.push(manager);
+  });
+};
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)

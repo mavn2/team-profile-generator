@@ -9,20 +9,25 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { doesNotMatch } = require("assert");
 
 //array to store employee objects
 const employees = [];
 
 mkTeam();
 //Initializes team-builder functions
-function mkTeam(){
-  mkManager();
+async function mkTeam(){
+  console.log('First, please enter your information.')
+  await mkManager();
+  console.log()
+  await mkEngineer();
+  await mkIntern
 }
 
 //Creates a single manager object
-function mkManager() {
+async function mkManager() {
   //Collects manager information
-  inquirer.prompt([
+  await inquirer.prompt([
     {
       type: 'input',
       message: 'Enter your manager\'s name',
@@ -47,11 +52,13 @@ function mkManager() {
     //Creates/adds a manager object
     const manager = new Manager(response.name, response.idnum, response.email, response.office)
     employees.push(manager);
+    return;
   });
 };
 
-function mkEngineer(){
-  inquirer.prompt([
+async function mkEngineer(){
+  //Collects engineer information
+  await inquirer.prompt([
     {
       type: 'input',
       message: 'Please enter their name',
@@ -74,13 +81,14 @@ function mkEngineer(){
     },
   ]).then(response => {
     //Creates/adds an engineer object
-    const engineer = new Engineer(response.name, response.idnum, response.email, response.github)
-    employees.push(engineer)
-  })
+    const engineer = new Engineer(response.name, response.idnum, response.email, response.github);
+    employees.push(engineer);
+  });
 };
 
-function mkIntern(){
-  inquirer.prompt([
+async function mkIntern(){
+  //Collects Intern information
+  await inquirer.prompt([
     {
       type: 'input',
       message: 'Please enter their name',
@@ -103,9 +111,9 @@ function mkIntern(){
     },
   ]).then(response => {
     //Creates/adds an intern object
-    const intern = new Intern(response.name, response.idnum, response.email, response.school)
-    employees.push(intern)
-  })
+    const intern = new Intern(response.name, response.idnum, response.email, response.school);
+    employees.push(intern);
+  });
 };
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)

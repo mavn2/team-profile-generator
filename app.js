@@ -52,7 +52,6 @@ async function mkManager() {
     //Creates/adds a manager object
     const manager = new Manager(response.name, response.idnum, response.email, response.office)
     employees.push(manager);
-    return;
   });
 };
 
@@ -78,7 +77,7 @@ async function mkEngineer(){
       type: 'input',
       message: 'Please enter a link to their github page',
       name: 'github'
-    },
+    }
   ]).then(response => {
     //Creates/adds an engineer object
     const engineer = new Engineer(response.name, response.idnum, response.email, response.github);
@@ -108,13 +107,41 @@ async function mkIntern(){
       type: 'input',
       message: 'Please enter their school',
       name: 'school'
-    },
+    }
   ]).then(response => {
     //Creates/adds an intern object
     const intern = new Intern(response.name, response.idnum, response.email, response.school);
     employees.push(intern);
   });
 };
+
+//Determine how many engineers are on a team
+async function checkEngineers(){
+  await inquirer.prompt([
+    {
+      type: 'number',
+      message: 'How many engineers are on your team?',
+      name: 'engineers'
+    }
+  ]).then(response => {
+    return response.engineers;
+  });
+};
+
+async function checkInterns(){
+  await inquirer.prompt([
+    {
+      type: 'number',
+      message: 'How many interns are on your team?',
+      name: 'interns'
+    }
+  ]).then(response => {
+    return response.interns;
+  });
+};
+
+
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 

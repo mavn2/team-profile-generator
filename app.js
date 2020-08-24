@@ -39,7 +39,7 @@ async function mkTeam(){
 
   //Saves text as html file under team name
   createTeamPage(page);
-}
+};
 
 //Collects/saves a Manager's information
 async function mkManager(teamName) {
@@ -166,7 +166,7 @@ async function checkInterns(){
     //Saves the data for each
     for(let i = 0; i < interns; i++){
       await mkIntern();
-    }
+    };
   });
 };
 
@@ -188,7 +188,7 @@ function createTeamPage(page){
       if (err) { 
         throw err;
       }
-      console.log(`${response.teamName} page complete!`)
-    })
-  })
+      console.log(`${response.teamName} page complete!`);
+    });
+  });
 };

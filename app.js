@@ -153,9 +153,13 @@ function createTeamPage(page){
       name: 'teamName'
     }
   ]).then(response => {
-    console.log(page)
-    console.log(response.teamName)
-  });
+    fs.writeFile(`${response.teamName}.html`, page, (err) => {
+      if (err) { 
+        throw err;
+      }
+      console.log(`${response.teamName} page complete!`)
+    })
+  })
 };
 
 // Write code to use inquirer to gather information about the development team members,
@@ -179,4 +183,4 @@ function createTeamPage(page){
 // and Intern classes should all extend from a class named Employee; see the directions
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+// for the provided `render` function to work!

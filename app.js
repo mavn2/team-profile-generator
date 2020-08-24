@@ -23,7 +23,7 @@ const employees = [];
 mkTeam();
 //Initializes team-builder functions
 async function mkTeam(){
-  console.log('First, please enter your information.')
+  console.log('First, please enter your information.');
 
   //Collects manager info
   await mkManager();
@@ -67,7 +67,7 @@ async function mkManager(teamName) {
     }
   ]).then(response => {
     //Creates/adds a manager object
-    const manager = new Manager(response.name, response.idnum, response.email, response.office)
+    const manager = new Manager(response.name, response.idnum, response.email, response.office);
     employees.push(manager);
   });
 };

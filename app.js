@@ -1,15 +1,21 @@
+//Required files and modules
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
-
 const render = require("./lib/htmlRenderer");
-const { doesNotMatch } = require("assert");
+
+//Establishes path to output folder
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+
+//Creates output folder if required
+fs.mkdir(OUTPUT_DIR, { recursive: true }, (err) =>{
+  if (err){
+    console.log('Error: output directory could not be created. Please check your permissions and try again.');
+  };
+});
 
 //array to store employee objects
 const employees = [];
@@ -46,7 +52,7 @@ async function mkManager(teamName) {
     },
     {
       type: 'input',
-      message: 'Enter your Id number:',
+      message: 'Enter your ID number:',
       name: 'idnum'
     },
     {
@@ -72,22 +78,22 @@ async function mkEngineer(){
   await inquirer.prompt([
     {
       type: 'input',
-      message: 'Please enter their name',
+      message: `Enter an engineer's name:`,
       name: 'name'
     },
     {
       type: 'input',
-      message: 'Please enter their ID',
+      message: 'Enter their ID:',
       name: 'idnum',
     },
     {
       type: 'input',
-      message: 'Please enter their email',
+      message: 'Enter their email:',
       name: 'email'
     },
     {
       type: 'input',
-      message: 'Please enter a link to their github page',
+      message: 'Enter a link to their Github page:',
       name: 'github'
     }
   ]).then(response => {
@@ -103,22 +109,22 @@ async function mkIntern(){
   await inquirer.prompt([
     {
       type: 'input',
-      message: 'Please enter their name',
+      message: `Enter an intern's name:`,
       name: 'name'
     },
     {
       type: 'input',
-      message: 'Please enter their ID',
+      message: 'Enter their ID:',
       name: 'idnum',
     },
     {
       type: 'input',
-      message: 'Please enter their email',
+      message: 'Enter their email:',
       name: 'email'
     },
     {
       type: 'input',
-      message: 'Please enter their school',
+      message: 'Enter their school:',
       name: 'school'
     }
   ]).then(response => {
@@ -130,6 +136,7 @@ async function mkIntern(){
 
 //Determine how many engineers are on a team
 async function checkEngineers(){
+  //Gets number of engineers
   await inquirer.prompt([
     {
       type: 'number',
@@ -138,7 +145,7 @@ async function checkEngineers(){
     }
   ]).then(async response => {
     let engineers = response.engineers;
-
+    //Saves the data for each
     for(let i = 0; i < engineers; i++){
       await mkEngineer();
     };
@@ -147,6 +154,7 @@ async function checkEngineers(){
 
 //Determine how many interns are on a team
 async function checkInterns(){
+  //Gets number of interns
   await inquirer.prompt([
     {
       type: 'number',
@@ -155,6 +163,7 @@ async function checkInterns(){
     }
   ]).then(async response => {
     let interns = response.interns;
+    //Saves the data for each
     for(let i = 0; i < interns; i++){
       await mkIntern();
     }
@@ -163,6 +172,7 @@ async function checkInterns(){
 
 //Names team and creates page
 function createTeamPage(page){
+  //Gets a unique filename
   inquirer.prompt([
     {
       type: 'input',
@@ -170,7 +180,11 @@ function createTeamPage(page){
       name: 'teamName'
     }
   ]).then(response => {
-    fs.writeFile(`${response.teamName}.html`, page, (err) => {
+    //Creates a clean file path to pass below
+    let outputPath = path.join(OUTPUT_DIR, `${response.teamName}`);
+
+    //Creates an html file with the formatted data
+    fs.writeFile(outputPath, page, (err) => {
       if (err) { 
         throw err;
       }

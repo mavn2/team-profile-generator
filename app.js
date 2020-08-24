@@ -19,13 +19,14 @@ mkTeam();
 async function mkTeam(){
   console.log('First, please enter your information.')
   await mkManager();
-  console.log()
   await mkEngineer();
-  await mkIntern
+  await mkIntern();
+  let page = await render(employees);
+  createTeamPage(page);
 }
 
-//Creates a single manager object
-async function mkManager() {
+//Collects/saves a Manager's information
+async function mkManager(teamName) {
   //Collects manager information
   await inquirer.prompt([
     {
@@ -55,6 +56,7 @@ async function mkManager() {
   });
 };
 
+//Collects/saves an Engineer's information
 async function mkEngineer(){
   //Collects engineer information
   await inquirer.prompt([
@@ -85,6 +87,7 @@ async function mkEngineer(){
   });
 };
 
+//Collects/saves an intern's information
 async function mkIntern(){
   //Collects Intern information
   await inquirer.prompt([
@@ -128,6 +131,7 @@ async function checkEngineers(){
   });
 };
 
+//Determine how many interns are on a team
 async function checkInterns(){
   await inquirer.prompt([
     {
@@ -140,7 +144,19 @@ async function checkInterns(){
   });
 };
 
-
+//Names team and creates page
+function createTeamPage(page){
+  inquirer.prompt([
+    {
+      type: 'input',
+      message: `Finally, please enter your team's name:`,
+      name: 'teamName'
+    }
+  ]).then(response => {
+    console.log(page)
+    console.log(response.teamName)
+  });
+};
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)

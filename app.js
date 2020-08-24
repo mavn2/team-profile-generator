@@ -18,10 +18,20 @@ mkTeam();
 //Initializes team-builder functions
 async function mkTeam(){
   console.log('First, please enter your information.')
+
+  //Collects manager info
   await mkManager();
-  await mkEngineer();
-  await mkIntern();
+
+  //Gets number of engineers and generates profiles for each
+  await checkEngineers();
+
+  //Gets number of interns and generates profiles for each
+  await checkInterns();
+
+  //Creates/stores html text
   let page = await render(employees);
+
+  //Saves text as html file under team name
   createTeamPage(page);
 }
 
@@ -31,22 +41,22 @@ async function mkManager(teamName) {
   await inquirer.prompt([
     {
       type: 'input',
-      message: 'Enter your manager\'s name',
+      message: 'Enter your name:',
       name: 'name' 
     },
     {
       type: 'input',
-      message: 'Enter your manager\'s Id number',
+      message: 'Enter your Id number:',
       name: 'idnum'
     },
     {
       type: 'input',
-      message: `Enter your manager's email`,
+      message: `Enter your email:`,
       name: 'email'
     },
     {
       type: 'input',
-      message: `Enter your manager's office number`,
+      message: `Enter your office number:`,
       name: 'office'
     }
   ]).then(response => {
@@ -126,8 +136,12 @@ async function checkEngineers(){
       message: 'How many engineers are on your team?',
       name: 'engineers'
     }
-  ]).then(response => {
-    return response.engineers;
+  ]).then(async response => {
+    let engineers = response.engineers;
+
+    for(let i = 0; i < engineers; i++){
+      await mkEngineer();
+    };
   });
 };
 
@@ -139,8 +153,11 @@ async function checkInterns(){
       message: 'How many interns are on your team?',
       name: 'interns'
     }
-  ]).then(response => {
-    return response.interns;
+  ]).then(async response => {
+    let interns = response.interns;
+    for(let i = 0; i < interns; i++){
+      await mkIntern();
+    }
   });
 };
 
@@ -161,26 +178,3 @@ function createTeamPage(page){
     })
   })
 };
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work!
